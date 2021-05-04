@@ -1,0 +1,42 @@
+{% extends "bboard/basic.html" %}
+{% block title %}Набор форм{% endblock %}
+{% block content %}
+<h2>Набор рубрик</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.management_form }}
+    {% if form.non_form_errors %}
+    <ul>
+        {% for error in form.non_form_errors %}
+        <li><em>{{ error|escape }}</em></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <p>{{ current_rubric.name }}</p><br>
+        {% for f in form %}
+            {% for hidden in f.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+            {% if f.non_field_errors %}
+            <ul>
+                {% for error in f.non_field_errors %}
+                <li><em>{{ error|escape }}</em></li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% for field in f.visible_fields %}
+                {% if field.errors %}
+                <ul>
+                    {% for error in field.errors %}
+                    <li><em>{{ error|escape }}</em></li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <p>{{ field.label_tag }}<br>{{ field }}<br>
+                {{ field.help_text }}</p>
+            {% endfor %}
+        {% endfor %}
+    <input type="submit" value="Сохранить">
+</form>
+{% endblock %}
+

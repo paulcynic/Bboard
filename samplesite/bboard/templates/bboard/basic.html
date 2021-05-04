@@ -11,10 +11,13 @@
             <h1>0бъявления</h1>
         </header>
         <nav>
+            <a href="{% url 'login' %}">Регистрация</a>
             <a href="{% url 'index' %}">Главная</a>
             <a href="{% url 'add' %}">Добавить</a>
             {% for rubric in rubrics %}
-            <a href="{% url 'by_rubric' rubric.pk %}">{{ rubric.name }}</a>
+            {% endfor %}
+            {% for rubric in rubrics %}
+            <a href="{% url 'by_rubric' rubric.pk %}">{{ rubric.name|truncatechars:11 }}</a>
             {% endfor %}
         </nav>
         <section>

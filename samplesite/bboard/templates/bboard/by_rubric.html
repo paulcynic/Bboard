@@ -2,12 +2,20 @@
 {% block title %} {{ current_rubric.name }} {% endblock %}
 {% block content %}
 <h2>Рубрика: {{ current_rubric.name }}</h2>
+    {% with bb_count=bbs.count %}
+    {% if bb_count > 0 %}
+    <p>В данной рубрике {{ bb_count }} объявлений.</p>
+    {% endif %}
+    {% endwith %}
         {% for bb in bbs %}
         <div>
-            <h2>{{ bb.title }}</h2>
-            <p>{{ bb.content }}</p>
+            <h2><a href="{% url 'old_detail' pk=bb.pk %}">{{ bb.title_and_price }}</a></h2>
+            <p>{{ bb.content|capfirst|default:'--описания нет--' }}</p>
             <a href="{% url 'by_rubric' bb.rubric_id %}">{{ current_rubric.name }}</a>
             <p>{{ bb.published|date:"d.m.Y H.i.s" }}</p>
+            <p><a href="{% url 'edit' pk=bb.pk %}">Редактировать</a></p>
+            <p><a href="{% url 'delete' pk=bb.pk %}">Удалить</a></p>
         </div>
+        {% empty %}В данной рубрике нет объявлений!
         {% endfor %}
 {% endblock %}
